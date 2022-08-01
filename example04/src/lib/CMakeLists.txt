@@ -48,6 +48,11 @@ llvmir_attach_link_target(bar_llvmlink bar_pass2)
 
 llvmir_attach_opt_pass_target(bar_pass4 bar_llvmlink -simplifycfg)
 
-llvmir_attach_library(bar_bc_lib bar_pass2 STATIC)
+llvmir_attach_obj_target(bar_bc_obj bar_pass2)
 
+llvmir_attach_library(bar_bc_lib bar_bc_obj STATIC)
 
+add_custom_target(bar_pipeline DEPENDS
+  bar_bc_lib)
+
+set_property(TARGET bar_pipeline PROPERTY EXCLUDE_FROM_ALL OFF)

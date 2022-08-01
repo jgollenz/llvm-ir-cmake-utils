@@ -21,6 +21,7 @@ add_executable(foo ${SOURCES})
 # this property is required by our parasitic targets
 set_target_properties(foo PROPERTIES LINKER_LANGUAGE CXX)
 
+# target_link_libraries(foo bar)
 target_link_libraries(foo bar_bc_lib)
 target_include_directories(foo PUBLIC "./include")
 
@@ -52,4 +53,7 @@ llvmir_attach_opt_pass_target(foo_pass4 foo_llvmlink -simplifycfg)
 
 llvmir_attach_executable(foo_bc_exe foo_pass2 SHARED)
 
+add_custom_target(foo_pipeline DEPENDS
+  foo_bc_exe)
 
+set_property(TARGET foo_pipeline PROPERTY EXCLUDE_FROM_ALL OFF)
